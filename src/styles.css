@@ -93,11 +93,14 @@ input:-webkit-autofill, textarea:-webkit-autofill {
 /* One section at a time; the page itself scrolls. Each section leaves room for Tau Ceti. */
 .screen {
   min-height: calc(100vh - 5.5rem); padding: 0 clamp(1.5rem, 5vw, 4rem) 4rem;
-  animation: arrive .75s cubic-bezier(.16,.84,.3,1) backwards;
-  transition: opacity .35s ease, transform .35s ease, filter .35s ease;
+  animation: arrive .6s cubic-bezier(.16,.84,.3,1) backwards;
+  transition: opacity .3s ease, transform .3s ease;
 }
 .screen[hidden] { display: none; }
-.stage[data-phase="out"] .screen:not([hidden]) { opacity: 0; transform: scale(1.06); filter: blur(3px); }
+.stage[data-phase="out"] .screen:not([hidden]) {
+  opacity: 0;
+  transform: translate(calc(var(--wdx, 0) * 40px), calc(var(--wdy, 0) * 40px)) scale(1.02);
+}
 .screen-inner { min-height: calc(100vh - 9.5rem); max-width: 72rem; margin: 0 auto; display: flex; flex-direction: column; }
 .screen-inner > .panel { margin-block: auto; width: 100%; }
 .screen[data-section="skills"] { padding-bottom: 34vh; }
@@ -106,8 +109,16 @@ input:-webkit-autofill, textarea:-webkit-autofill {
   .screen[data-section="about"] { padding-right: max(clamp(1.5rem, 5vw, 4rem), 30vw); }
   .screen[data-section="projects"] { padding-left: max(clamp(1.5rem, 5vw, 4rem), 30vw); }
 }
-@keyframes arrive { from { opacity: 0; transform: scale(.97); filter: blur(5px); } }
-
+@keyframes arrive {
+  from { opacity: 0;
+         transform: translate(calc(var(--wdx, 0) * -30px), calc(var(--wdy, 0) * -30px)) scale(.985); }
+}
+/* Contact: a quiet reveal once the stars have settled, with a soft backing for readability */
+@keyframes arrive-quiet { from { opacity: 0; } }
+@keyframes settle { from { opacity: 0; } }
+.screen[data-section="contact"] { animation: arrive-quiet 1.1s ease-out backwards; }
+.screen[data-section="contact"] .panel { background: rgba(4,6,10,.5); padding-inline: 1.5rem; }
+.tau[data-arrived="true"] .tau-label p { animation: settle 1.4s ease-out backwards; }
 /* Loader */
 .loader { position: fixed; inset: 0; z-index: 20; display: grid; place-content: center; justify-items: center; gap: 1.2rem; background: var(--bg); text-align: center; transition: opacity .5s ease; }
 .loader[data-leaving="true"] { opacity: 0; pointer-events: none; }

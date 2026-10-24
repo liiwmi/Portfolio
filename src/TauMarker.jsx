@@ -95,7 +95,9 @@ export default function TauMarker({ section, traveling, ready }) {
               {l}
             </p>
           ))}
-        <p className={arrived ? "tau-title" : undefined}>{status}</p>
+        <p className="tau-title">
+          {traveling ? "DESTINATION: TAU CETI" : info.title}
+        </p>
       </div>
     </aside>
   );

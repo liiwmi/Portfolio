@@ -11,7 +11,7 @@ import {
   useRotating,
   prefersReducedMotion,
 } from "./hooks.js";
-import { startWarp, retarget, setTarget } from "./warp.js";
+import { startWarp, retarget, setTarget, SWAP, END } from "./warp.js";
 import { profile, projects, skills, contacts, messages } from "./content.js";
 
 const SECTIONS = [
@@ -95,17 +95,20 @@ function useTravel(initial) {
           s.swapped = true;
           setPhase("in");
         },
-        Math.round(dur * 0.42),
+        Math.round(dur * SWAP[id]),
       ),
     );
     s.timers.push(
-      setTimeout(() => {
-        s.busy = false;
-        setPhase("idle");
-        const q = s.queued;
-        s.queued = null;
-        if (q && q !== s.current) go(q);
-      }, dur),
+      setTimeout(
+        () => {
+          s.busy = false;
+          setPhase("idle");
+          const q = s.queued;
+          s.queued = null;
+          if (q && q !== s.current) go(q);
+        },
+        Math.round(dur * END[id]),
+      ),
     );
   }, []);
 
